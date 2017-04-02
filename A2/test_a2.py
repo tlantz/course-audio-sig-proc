@@ -43,3 +43,9 @@ class Assignment2TestCase(unittest.TestCase):
         input = np.array([1, 1, 1, 1])
         actual = A2Part4.IDFT(input)
         npt.assert_array_almost_equal(actual, expected)
+
+    def test_genMagSpec_should_generate_example_from_assignment(self):
+        expected = np.array([10.0, 2.82842712, 2.0, 2.82842712])
+        input = np.arange(len(expected)) + 1.0
+        actual = A2Part5.genMagSpec(input)
+        npt.assert_array_almost_equal(actual, expected)
