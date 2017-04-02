@@ -25,4 +25,6 @@ def genComplexSine(k, N):
         The function should return a numpy array
         cSine (numpy array) = The generated complex sinusoid (length N)
     """
-    ## Your code here
+    points = np.arange(N)  # just generate simple time indexes
+    omega = 2.0 * np.pi * k  # calculate little w
+    return np.exp(-1j * omega * points * (1.0 / N))  # e ^ (j * w * n * T)
