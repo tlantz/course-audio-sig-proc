@@ -32,4 +32,12 @@ def IDFT(X):
         The function should return a numpy array of length N 
         x (numpy array) = The N point IDFT of the frequency spectrum X
     """
-    ## Your code here
+    N = len(X)
+    freq_offsets = np.arange(N)
+    time_offsets = freq_offsets
+    result = np.array([])
+    # summation for IDFT over time TODO - use matrix ops to get rid of loop
+    for n in time_offsets:
+        projection = np.exp(1j * np.pi * 2.0 * n * freq_offsets / N)
+        result = np.append(result, 1.0 / N * sum(X * projection))
+    return result

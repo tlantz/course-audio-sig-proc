@@ -34,3 +34,12 @@ class Assignment2TestCase(unittest.TestCase):
                              -2.0 - 2.0j])
         actual = A2Part3.DFT(np.arange(1, 5))
         npt.assert_array_almost_equal(actual, expected)
+
+    def test_IDFT_should_generate_example_from_assignment(self):
+        expected = np.array([1.00000000e+00 +0.00000000e+00j,
+                            -4.59242550e-17 +5.55111512e-17j,
+                            0.00000000e+00 +6.12323400e-17j,
+                            8.22616137e-17 +8.32667268e-17j])
+        input = np.array([1, 1, 1, 1])
+        actual = A2Part4.IDFT(input)
+        npt.assert_array_almost_equal(actual, expected)
