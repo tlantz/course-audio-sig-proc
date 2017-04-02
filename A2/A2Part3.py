@@ -25,4 +25,12 @@ def DFT(x):
         The function should return a numpy array of length N
         X (numpy array) = The N point DFT of the input sequence x
     """
-    ## Your code here
+    N = len(x)
+    freq_offsets = np.arange(N)  # these are "k's"
+    time_offsets = freq_offsets
+    result = np.array([])
+    # summation for DFT TODO - use matrix ops to get rid of loop
+    for k in freq_offsets:
+        complex_projection = np.exp(-1j * 2 * np.pi * k * time_offsets / N)
+        result = np.append(result, sum(x * complex_projection))
+    return result
