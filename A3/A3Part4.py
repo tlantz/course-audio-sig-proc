@@ -61,5 +61,16 @@ def suppressFreqDFTmodel(x, fs, N):
     M = len(x)
     w = get_window('hamming', M)
     outputScaleFactor = sum(w)
-    
-    ## Your code here
+    # do initial analysis
+    mX, pX = dftAnal(x, w, N)
+    y = dftSynth(mX, pX, w.size) * outputScaleFactor
+    # calculate frequencies of buckets
+    fk = fs * np.arange(0, len(mX)) / N
+    # calculate the cutoff bucket index
+    cutoff = len(fk[fk< 70.0])
+    # make a copy and filter below the cutoff
+    mXfilt = mX.copy()
+    mXfilt[:cutoff] = -120.0
+    # make the filtered synth
+    yfilt = dftSynth(mXfilt, pX, w.size) * outputScaleFactor
+    return (y, yfilt)
