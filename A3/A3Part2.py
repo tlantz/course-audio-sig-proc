@@ -55,4 +55,12 @@ def optimalZeropad(x, fs, f):
         mX (numpy array) = The positive half of the DFT spectrum of the N point DFT after zero-padding 
                         x appropriately (zero-padding length to be computed). mX is (N/2)+1 samples long
     """
-    ## Your code here
+    samples_per_period = fs / f
+    periods = len(x) / samples_per_period
+    required_window_periods = np.ceil(periods)
+    window = np.zeros(required_window_periods * samples_per_period)
+    window[:len(x)/2] = x[:len(x)/2]
+    window[-len(x)/2:] = x[-len(x)/2:]
+    spectrum = fft(window)
+    return 20 * np.log10(np.abs(spectrum[:(len(window) / 2) + 1]))
+
