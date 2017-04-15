@@ -1,5 +1,6 @@
 import unittest
 import A3Part1
+import A3Part2
 import numpy as np
 from numpy import testing as npt
 
@@ -10,15 +11,18 @@ class Assignment3TestCase(unittest.TestCase):
         nzs = set(non_zeros)
         for i in xrange(0, len(array)):
             if i in nzs:
-                self.assertGreater(array[i], 0.0)
+                self.assertGreater(array[i], -120.0)
             else:
-                self.assertLess(array[i], 0.0)
+                self.assertLess(array[i], -120.0)
+
+    def _generate_sine(self, fs, f):
+        time = np.arange(-1.0, 1.0, 1.0 / fs)
+        sine = np.cos(2 * np.pi * f * time)
+        return sine
 
     def _generate_two_sine_signal(self, fs, f1, f2):
-        positions = np.arange(0, fs)
-        time = np.arange(-1.0, 1.0, 1.0 / fs)
-        sine1 = np.cos(2 * np.pi * f1 * time)
-        sine2 = np.cos(2 * np.pi * f2 * time)
+        sine1 = self._generate_sine(fs, f1)
+        sine2 = self._generate_sine(fs, f2)
         return sine1 + sine2
 
     def test_minimizeEnergySpreadDFT_has_expected_bins_1(self):
@@ -38,3 +42,17 @@ class Assignment3TestCase(unittest.TestCase):
         bins = A3Part1.minimizeEnergySpreadDFT(x, fs, f1, f2)
         self.assertEquals(241, len(bins))
         self._assert_zero_except(bins, 3, 8)
+
+    def _test_optimalZeropad(self, length, maxbin_index, fs, f, M):
+        x = self._generate_sine(fs, f)[:M]
+        mX = A3Part2.optimalZeropad(x, fs, f)
+        self.assertEquals(length, len(mX))
+        maxbin = mX[maxbin_index]
+        self.assertGreater(maxbin, mX[maxbin_index - 1])
+        self.assertGreater(maxbin, mX[maxbin_index + 1])
+
+    def test_optimalZeropad_1(self):
+        self._test_optimalZeropad(16, 3, 1000, 100, 25)
+
+    def test_optimalZeropad_2(self):
+        self._test_optimalZeropad(121, 6, 10000, 250, 210)
