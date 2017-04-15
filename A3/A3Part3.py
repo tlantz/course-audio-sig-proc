@@ -1,13 +1,12 @@
 import numpy as np
-from scipy.fftpack import fft, fftshift
-import math
+from scipy.fftpack import fft
 
 """
 A3-Part-3: Symmetry properties of the DFT
 
 Write a function to check if the input signal is real and even using the symmetry properties of its
-DFT. The function will return the result of this test, the zerophase windowed version of the input 
-signal (dftbuffer), and the DFT of the dftbuffer. 
+DFT. The function will return the result of this test, the zerophase windowed version of the input
+signal (dftbuffer), and the DFT of the dftbuffer.
 
 Given an input signal x of length M, do a zero phase windowing of x without any zero-padding (a 
 dftbuffer, on the same lines as the fftbuffer in sms-tools). Then compute the M point DFT of the 
@@ -48,4 +47,25 @@ def testRealEven(x):
         dftbuffer (numpy array, possibly complex) = The M point zero phase windowed version of x 
         X (numpy array, possibly complex) = The M point DFT of dftbuffer 
     """
-    ## Your code here
+    N = len(x)
+    # calculate window
+    dftbuffer = np.zeros(N)
+    midlo = np.floor(N / 2.0)
+    midhi = np.floor((N + 1) / 2.0)
+    dftbuffer[:midhi] = x[midlo:]
+    dftbuffer[-midlo:] = x[:midlo]
+    # calculate DFT
+    X = fft(dftbuffer)
+    # test DFT for realness
+    X.imag[abs(X.imag) < 1e-6] = 0.0  # specified by directions
+    is_real = all(np.isreal(X))
+    # test DFT for evenness
+    X_1 = abs(X[1:N/2.0 + 1])
+    X_2 = abs(X[-N/2.0:][::-1])
+    XT = X_1 - X_2
+    X[X < 1e-6] = 0.0  # specified by directions
+    is_even = 0 == len(np.nonzero(XT)[0])
+    return (
+        is_real and is_even,
+        dftbuffer,
+        X)

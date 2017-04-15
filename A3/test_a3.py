@@ -1,6 +1,7 @@
 import unittest
 import A3Part1
 import A3Part2
+import A3Part3
 import numpy as np
 from numpy import testing as npt
 
@@ -56,3 +57,37 @@ class Assignment3TestCase(unittest.TestCase):
 
     def test_optimalZeropad_2(self):
         self._test_optimalZeropad(121, 6, 10000, 250, 210)
+
+    def test_testRealEven_1(self):
+        x = np.array([2, 3, 4, 3, 2])
+        is_real_even, dftbuffer, X = A3Part3.testRealEven(x)
+        self.assertTrue(is_real_even)
+        npt.assert_array_equal(
+            dftbuffer,
+            np.array([4., 3., 2., 2., 3.]))
+        npt.assert_array_almost_equal(
+            X,
+            np.array([14.0000+0.j,
+                      2.6180+0.j,
+                      0.3820+0.j,
+                      0.3820+0.j,
+                      2.6180+0.j]),
+            4)
+
+    def test_testRealEven_2(self):
+        x = np.array([1, 2, 3, 4, 1, 2, 3])
+        is_real_even, dftbuffer, X = A3Part3.testRealEven(x)
+        self.assertFalse(is_real_even)
+        npt.assert_array_equal(
+            dftbuffer,
+            np.array([4., 1., 2., 3., 1., 2., 3.]))
+        npt.assert_array_almost_equal(
+            X,
+            np.array([16.+0.j,
+                      2.+0.69j,
+                      2.+3.51j,
+                      2.-1.08j,
+                      2.+1.08j,
+                      2.-3.51j,
+                      2.-0.69j]),
+            2)
