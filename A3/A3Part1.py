@@ -65,4 +65,4 @@ def minimizeEnergySpreadDFT(x, fs, f1, f2):
     M = (period_1 * period_2) / gcd(period_1, period_2)
     spectrum = fft(x[:M])
     positive_size = (M / 2) + 1
-    return 20 * np.log10(abs(spectrum[:positive_size])/M)
+    return 20 * np.log10(abs(spectrum[:positive_size]))

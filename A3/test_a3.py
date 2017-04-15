@@ -6,12 +6,13 @@ from numpy import testing as npt
 class Assignment3TestCase(unittest.TestCase):
 
     def _assert_zero_except(self, array, *non_zeros):
+        '''Checks for logical "zero" (negative) because this is decibals.'''
         nzs = set(non_zeros)
         for i in xrange(0, len(array)):
             if i in nzs:
-                self.assertNotEqual(array[i], 0)
+                self.assertGreater(array[i], 0.0)
             else:
-                npt.assert_almost_equal(array[i], 0)
+                self.assertLess(array[i], 0.0)
 
     def _generate_two_sine_signal(self, fs, f1, f2):
         positions = np.arange(0, fs)
