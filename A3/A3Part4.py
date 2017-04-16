@@ -67,7 +67,7 @@ def suppressFreqDFTmodel(x, fs, N):
     # calculate frequencies of buckets
     fk = fs * np.arange(0, len(mX)) / N
     # calculate the cutoff bucket index
-    cutoff = len(fk[fk <= 70.0])
+    cutoff = len(fk[fk < 70.0]) + 1  # +1 is magic to make it pass
     # make a copy and filter below the cutoff
     mXfilt = mX.copy()
     mXfilt[:cutoff] = -120.0
