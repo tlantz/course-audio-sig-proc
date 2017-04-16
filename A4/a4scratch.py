@@ -35,31 +35,34 @@ def setup_plotting():
 
 setup_plotting()
 
-# Assignment 4, Part 1 Scratch
-M = 100
-window = 'blackmanharris'
-N = 8 * M
-w = get_window(window, M)
-plot = pltsac(1, 311, 'Blackman Harris Window')
-plot.plot(w)
-# Populate FFT buffer (must be even due to 8)
-fftbuffer = np.zeros(N)
-hN = N/2
-hM = M/2
-fftbuffer[hN-hM:hN+hM] = w
-# Take FFT
-X = fftshift(fft(fftbuffer))  # FFT and center
-X[X == 0.] = EPS  # avoid log warnings
-mX = 20 * np.log10(abs(X))
-plot = pltsac(1, 312, 'Blackman Harris mX')
-plot.plot(mX)
-# Main lobe center, then find closest local minima
-mlc = np.argmax(mX)
-localmin = argrelmin(mX)[0]
-left_mllm = localmin[localmin < 400][-1]
-rite_mllm = localmin[localmin > 400][0]
-# Extract the main lobe (include right min so +1)
-main_lobe = mX[left_mllm:rite_mllm+1]
-plot = pltsac(1, 313, 'Blackman Harris mX Main Lobe')
-plot.plot(main_lobe)
+def assignment_4_part_1_scratch():
+    # Assignment 4, Part 1 Scratch
+    M = 100
+    window = 'blackmanharris'
+    N = 8 * M
+    w = get_window(window, M)
+    plot = pltsac(1, 311, 'Blackman Harris Window')
+    plot.plot(w)
+    # Populate FFT buffer (must be even due to 8)
+    fftbuffer = np.zeros(N)
+    hN = N/2
+    hM = M/2
+    fftbuffer[hN-hM:hN+hM] = w
+    # Take FFT
+    X = fftshift(fft(fftbuffer))  # FFT and center
+    X[X == 0.] = EPS  # avoid log warnings
+    mX = 20 * np.log10(abs(X))
+    plot = pltsac(1, 312, 'Blackman Harris mX')
+    plot.plot(mX)
+    # Main lobe center, then find closest local minima
+    mlc = np.argmax(mX)
+    localmin = argrelmin(mX)[0]
+    left_mllm = localmin[localmin < 400][-1]
+    rite_mllm = localmin[localmin > 400][0]
+    # Extract the main lobe (include right min so +1)
+    main_lobe = mX[left_mllm:rite_mllm+1]
+    plot = pltsac(1, 313, 'Blackman Harris mX Main Lobe')
+    plot.plot(main_lobe)
+
+# ASsignment 4, Part 2 scratch
 
