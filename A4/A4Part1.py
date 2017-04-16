@@ -1,8 +1,6 @@
 import numpy as np
-from scipy.signal import get_window
+from scipy.signal import get_window, argrelmin
 from scipy.fftpack import fft, fftshift
-import math
-import matplotlib.pyplot as plt
 eps = np.finfo(float).eps
 
 """
@@ -61,5 +59,24 @@ def extractMainLobe(window, M):
     """
 
     w = get_window(window, M)         # get the window
-
-    # Your code here
+    N = 8 * M  # this is the FFT size (instructions above)
+    # create buffer and center the window data around zero
+    fftbuffer = np.zeros(N)
+    hN = N / 2
+    hM = M / 2
+    fftbuffer[hN - hM:hN + hM] = w
+    X = fftshift(fft(fftbuffer))  # FFT and center spectrum
+    X[X == 0.] = eps              # avoid divide by zeros
+    mX = 20.0 * np.log10(abs(X))  # magnitude spectrum
+    # main lobe should now be centered for the window
+    main_lobe_center_idx = np.argmax(mX)
+    localmins = argrelmin(mX)[0]
+    # highest minimum to the left of the main lobe center
+    left_main_lobe_min_idx = localmins[
+        localmins < main_lobe_center_idx][-1]
+    # lowest minimum to the right of the main lobe center
+    rite_main_lobe_min_idx = localmins[
+        localmins > main_lobe_center_idx][0]
+    # extract the main lobe and include the rightmost index (+1)
+    main_lobe = mX[left_main_lobe_min_idx:rite_main_lobe_min_idx + 1]
+    return main_lobe
