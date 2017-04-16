@@ -5,6 +5,7 @@ import A3Part3
 import numpy as np
 from numpy import testing as npt
 
+
 class Assignment3TestCase(unittest.TestCase):
 
     def _assert_zero_except(self, array, *non_zeros):
@@ -67,11 +68,11 @@ class Assignment3TestCase(unittest.TestCase):
             np.array([4., 3., 2., 2., 3.]))
         npt.assert_array_almost_equal(
             X,
-            np.array([14.0000+0.j,
-                      2.6180+0.j,
-                      0.3820+0.j,
-                      0.3820+0.j,
-                      2.6180+0.j]),
+            np.array([14.0000 + 0.j,
+                      2.6180 + 0.j,
+                      0.3820 + 0.j,
+                      0.3820 + 0.j,
+                      2.6180 + 0.j]),
             4)
 
     def test_testRealEven_2(self):
@@ -83,11 +84,11 @@ class Assignment3TestCase(unittest.TestCase):
             np.array([4., 1., 2., 3., 1., 2., 3.]))
         npt.assert_array_almost_equal(
             X,
-            np.array([16.+0.j,
-                      2.+0.69j,
-                      2.+3.51j,
-                      2.-1.08j,
-                      2.+1.08j,
-                      2.-3.51j,
-                      2.-0.69j]),
+            np.array([16. + 0.j,
+                      2. + 0.69j,
+                      2. + 3.51j,
+                      2. - 1.08j,
+                      2. + 1.08j,
+                      2. - 3.51j,
+                      2. - 0.69j]),
             2)

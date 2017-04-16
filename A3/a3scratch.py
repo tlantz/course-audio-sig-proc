@@ -88,4 +88,3 @@ xfilt = xfilt[:1001]
 plt.subplot(412)
 plt.cla()
 plt.plot(xfilt)
-
