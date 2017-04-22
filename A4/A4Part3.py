@@ -104,6 +104,6 @@ def computeEngEnv(inputFile, window, M, N, H):
     assert 10000. > band_2_max * (fs / N)
     mX = 10. ** (xmX / 20.)
     envs = np.zeros((mX.shape[0], 2))
-    envs[:, 0] = 10. * np.log10(np.sum(mX[:, band_1_min:band_1_max] ** 2., axis=1))
-    envs[:, 1] = 10. * np.log10(np.sum(mX[:, band_2_min:band_2_max] ** 2., axis=1))
+    envs[:, 0] = 10. * np.log10(np.sum(mX[:, band_1_min:band_1_max + 1] ** 2., axis=1))
+    envs[:, 1] = 10. * np.log10(np.sum(mX[:, band_2_min:band_2_max + 1] ** 2., axis=1))
     return envs
