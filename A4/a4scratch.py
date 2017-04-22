@@ -68,13 +68,43 @@ def assignment_4_part_1_scratch():
     plot = pltsac(1, 313, 'Blackman Harris mX Main Lobe')
     plot.plot(main_lobe)
 
-# ASsignment 4, Part 2 scratch
-inputfile = '../../sounds/piano.wav'
-inputwav = UF.wavread(inputfile)
-x = inputwav[1]
+def assignment_4_part_2_scratch():
+    # Assignment 4, Part 2 scratch
+    inputfile = '../../sounds/piano.wav'
+    inputwav = UF.wavread(inputfile)
+    x = inputwav[1]
+    window = 'blackman'
+    M = 513
+    w = get_window(window, M)
+    N = 2048
+    H = 128
+    y = stft.stft(x, w, N, H)
+
+#def assignment_4_part_3_scratch():
+    # Assignment 4, Part 3 scratch
+inputFile = '../../sounds/piano.wav'
 window = 'blackman'
 M = 513
 w = get_window(window, M)
-N = 2048
+N = 1024
 H = 128
-y = stft.stft(x, w, N, H)
+
+fs, x = UF.wavread(inputFile)
+w = get_window(window, M)
+xmX, xpX = stft.stftAnal(x, w, N, H)
+band_1_min = 1  # otherwise 0. is always 0 index
+band_1_max = int(3000. / (fs / N))
+if 3000. == band_1_max * (fs / N):
+    band_1_max -= 1  # protect against an exact eq off by one
+assert 3000. > band_1_max * (fs / N)  # double check
+band_2_min = band_1_max + 1
+if 3000. == band_2_min * (fs / N):
+    band_2_min += 1  # another off by one fix
+assert 300. < band_2_min * (fs / N)  # again double check
+band_2_max = int(10000. / (fs / N))
+if 10000. == band_2_max * (fs / N):
+    band_2_max -= 1  # another off by one
+assert 10000. > band_2_max * (fs / N)
+
+
+

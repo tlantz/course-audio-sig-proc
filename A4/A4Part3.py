@@ -86,5 +86,24 @@ def computeEngEnv(inputFile, window, M, N, H):
             engEnv[:,0]: Energy envelope in band 0 < f < 3000 Hz (in dB)
             engEnv[:,1]: Energy envelope in band 3000 < f < 10000 Hz (in dB)
     """
-
-    # your code here
+    fs, x = wavread(inputFile)
+    w = get_window(window, M)
+    xmX, xpX = stft.stftAnal(x, w, N, H)
+    band_1_min = 1  # otherwise 0. is always 0 index
+    band_1_max = int(3000. / (fs / N))
+    if 3000. == band_1_max * (fs / N):
+        band_1_max -= 1  # protect against an exact eq off by one
+    assert 3000. > band_1_max * (fs / N)  # double check
+    band_2_min = band_1_max + 1
+    if 3000. == band_2_min * (fs / N):
+        band_2_min += 1  # another off by one fix
+    assert 300. < band_2_min * (fs / N)  # again double check
+    band_2_max = int(10000. / (fs / N))
+    if 10000. == band_2_max * (fs / N):
+        band_2_max -= 1  # another off by one
+    assert 10000. > band_2_max * (fs / N)
+    mX = 10. ** (mX / 20.)
+    envs = np.zeros((mX.shape[0], 2))
+    envs[:, 0] = 10. * np.log10(np.sum(mX[:, band_1_min:band_1_max] ** 2., axis=1))
+    envs[:, 0] = 10. * np.log10(np.sum(mX[:, band_1_min:band_1_max] ** 2., axis=1))
+    return envs
