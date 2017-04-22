@@ -3,6 +3,10 @@ from scipy.fftpack import fft, fftshift
 from scipy.signal import get_window
 from scipy.signal import argrelmin
 import matplotlib.pyplot as plt
+import sys
+sys.path.append('../../software/models')
+import stft
+import utilFunctions as UF
 
 EPS = np.finfo(float).eps
 FIG_X = 12
@@ -65,4 +69,12 @@ def assignment_4_part_1_scratch():
     plot.plot(main_lobe)
 
 # ASsignment 4, Part 2 scratch
-
+inputfile = '../../sounds/piano.wav'
+inputwav = UF.wavread(inputfile)
+x = inputwav[1]
+window = 'blackman'
+M = 513
+w = get_window(window, M)
+N = 2048
+H = 128
+y = stft.stft(x, w, N, H)

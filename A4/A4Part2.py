@@ -64,4 +64,16 @@ def computeSNR(inputFile, window, M, N, H):
             The function should return a python tuple of both the SNR values (SNR1, SNR2)
             SNR1 and SNR2 are floats.
     """
-    # your code here
+    fs, x = UF.wavread(inputFile)
+    w = get_window(window, M)
+    y = stft.stft(x, w, N, H)
+    E_sig_full = sum(np.power(abs(x), 2))
+    E_noise_full = sum(np.power(abs(x - y), 2))
+    x_part = x[M:-M]
+    y_part = y[M:-M]
+    E_sig_part = sum(np.power(abs(x_part), 2))
+    E_noise_part = sum(np.power(abs(x_part - y_part), 2))
+    def snr_impl(e_sig, e_nos):
+        return 10. * np.log10(e_sig / e_nos)
+    return (snr_impl(E_sig_full, E_noise_full),
+            snr_impl(E_sig_part, E_noise_part))
